@@ -52,7 +52,7 @@ function doPost(e) {
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
         'Timestamp', 'Name', 'Email', 'Phone', 'Marketing Consent',
-        'Timing', 'Goal', 'Days', 'Team', 'Experience'
+        'Timing', 'Goal', 'Days', 'Challenge', 'Experience'
       ]);
     }
 
@@ -65,7 +65,7 @@ function doPost(e) {
       data.timing     || '',
       data.goal       || '',
       data.days       || '',
-      data.team       || '',
+      data.challenge  || '',
       data.experience || ''
     ]);
 

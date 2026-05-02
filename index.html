@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>REVL St. Marys — Find Your Training Plan</title>
-  <meta name="description" content="Answer 5 questions and get your personalised REVL St. Marys training plan.">
-  <meta property="og:title" content="Find Your Perfect REVL Training Plan — St. Marys">
+  <title>REVL St. Marys — Find Your Perfect Training Routine</title>
+  <meta name="description" content="Answer 5 questions and get your personalised REVL St. Marys training routine.">
+  <meta property="og:title" content="Find Your Perfect Training Routine at REVL St. Marys">
   <meta property="og:description" content="5 questions. Your personalised REVL St. Marys week — programs, times, and schedule built for you.">
   <meta property="og:image" content="assets/og-image.png">
   <meta property="og:type" content="website">
@@ -271,7 +271,6 @@
 
     /* quiz body: slide transitions between questions */
     #quiz-body {
-      flex: 1;
       display: flex;
       flex-direction: column;
       transition: opacity 200ms ease, transform 200ms ease;
@@ -325,7 +324,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 24px 0 32px;
-      margin-top: auto;
+      margin-top: 28px;
     }
 
     /* =====================================================
@@ -675,8 +674,8 @@
         </svg>
       </div>
       <div class="welcome-location">REVL St. Marys</div>
-      <h1 class="welcome-headline">Find Your Perfect Training Plan</h1>
-      <p class="welcome-sub">Answer 5 quick questions and we'll build your personalised training week at REVL St. Marys.</p>
+      <h1 class="welcome-headline">Find Your Perfect Training Routine</h1>
+      <p class="welcome-sub">5 quick questions. We'll help you fit the right training into your week — no pressure, just the program that works for your life.</p>
       <p class="welcome-time">Takes about 2 minutes</p>
       <button class="btn-primary" onclick="startQuiz()">Let's Go →</button>
     </div>
@@ -769,8 +768,8 @@
       id: 'timing',
       text: "Are you a morning person?",
       options: [
-        { value: 'morning',  label: 'Yes — I train early' },
-        { value: 'evening',  label: 'No — evenings work better' },
+        { value: 'morning',  label: 'Yes, I train early' },
+        { value: 'evening',  label: 'Evenings work better for me' },
         { value: 'flexible', label: 'Depends on the day' }
       ]
     },
@@ -797,12 +796,13 @@
       ]
     },
     {
-      id: 'team',
-      text: "Do you enjoy training with a team?",
+      id: 'challenge',
+      text: "What's your biggest challenge right now?",
       options: [
-        { value: 'love',     label: 'Love it — the energy is everything' },
-        { value: 'dontmind', label: "I don't mind either way" },
-        { value: 'solo',     label: 'I prefer training solo' }
+        { value: 'time',       label: 'Finding time around work, family and life' },
+        { value: 'motivation', label: 'Staying motivated and consistent' },
+        { value: 'community',  label: 'Not having people to train with' },
+        { value: 'direction',  label: 'Not knowing where to start' }
       ]
     },
     {
@@ -976,7 +976,7 @@
             timing:     answers.timing,
             goal:       answers.goal,
             days:       answers.days,
-            team:       answers.team,
+            challenge:  answers.challenge,
             experience: answers.experience
           })
         });
@@ -994,7 +994,7 @@
   // RESULT LOGIC
   // ===========================================================
   function buildResultScreen() {
-    const { timing, goal, days, team, experience } = answers;
+    const { timing, goal, days, experience } = answers;
 
     // --- Program selection ---
     let doPerform = false, doMove = false, doSweat = false, doSweatTeam = false, doComplete = false;
@@ -1012,8 +1012,7 @@
     if (days === '5-6')      { doSweat = true; doSweatTeam = true; }
     if (days === 'everyday') { doSweat = true; doSweatTeam = true; doComplete = true; }
 
-    const sweatTeamHighlight = (team === 'love');
-    const sweatTeamSolo      = (team === 'solo' && doSweatTeam);
+    const sweatTeamHighlight = doSweatTeam;
 
     // --- Time slots by preference ---
     const earlyT  = ['5:00AM', '6:00AM', '7:00AM'];
@@ -1035,7 +1034,7 @@
       Wed: (doPerform || doMove)               ? { label: mainLabel,    time: recT,     on: true  } : { label: 'REST', on: false },
       Thu: doSweat                             ? { label: 'SWEAT',      time: recT,     on: true  } : { label: 'REST', on: false },
       Fri: (doPerform || doMove)               ? { label: mainLabel,    time: recT,     on: true  } : { label: 'REST', on: false },
-      Sat: (doSweatTeam && !sweatTeamSolo)     ? { label: 'SWEAT TEAM', time: '7:00AM', on: true  } : { label: 'REST', on: false },
+      Sat: doSweatTeam                         ? { label: 'SWEAT TEAM', time: '7:00AM', on: true  } : { label: 'REST', on: false },
       Sun: doComplete                          ? { label: 'COMPLETE',   time: '8:00AM', on: true  } : { label: 'REST', on: false }
     };
 
@@ -1061,16 +1060,13 @@
     if (doMove)    programs.push({ name:'MOVE',    desc:"Conditioning-focused training — moderate weights, higher reps, shorter rest. Built for toning, aerobic capacity, and lean muscle.", days:'Mon / Wed / Fri', times: mainT });
     if (doPerform) programs.push({ name:'PERFORM', desc:"Progressive strength program built around overload. Structured to help you lift heavier over time — measurable progression block by block.", days:'Mon / Wed / Fri', times: mainT });
     if (doSweat)   programs.push({ name:'SWEAT',   desc:"Short, sharp, high-intensity intervals. Max effort with generous rest between rounds — the fastest way to build your cardio engine.", days:'Tue / Thu', times: sweatT });
-    if (doSweatTeam && !sweatTeamSolo) programs.push({
+    if (doSweatTeam) programs.push({
       name:  'SWEAT TEAM',
-      desc:  sweatTeamHighlight
-        ? "Your kind of session — team relay format, high energy, community-first. The most fun hour of your week, every Saturday."
-        : "Team relay on Saturday. A different kind of challenge — great for accountability and community.",
+      desc:  "Team relay format, high energy, community-first. The most fun hour of your week, every Saturday.",
       days:  'Saturday',
       times: ['7:00AM', '8:00AM']
     });
-    if (doComplete)    programs.push({ name:'COMPLETE', desc:"Upper + lower body combined with conditioning. Lower intensity — perfect as your Sunday recovery or a mid-week make-up session.", days:'Sunday', times:['8:00AM'] });
-    if (sweatTeamSolo) programs.push({ name:'SWEAT TEAM (Optional)', desc:"Team relay every Saturday at 7AM or 8AM. You prefer solo — but this one's worth trying at least once.", days:'Saturday', times:['7:00AM','8:00AM'] });
+    if (doComplete) programs.push({ name:'COMPLETE', desc:"Upper + lower body combined with conditioning. Lower intensity — perfect as your Sunday recovery or a mid-week make-up session.", days:'Sunday', times:['8:00AM'] });
 
     const programsHTML = programs.map((p, i) => `
       <div class="program-card anim anim-d${Math.min(i, 7)}">
