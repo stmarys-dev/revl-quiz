@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>REVL Training — Find Your Program</title>
-  <meta name="description" content="Answer 5 questions and get your personalised REVL training plan. REVL St. Marys.">
-  <meta property="og:title" content="Find Your Perfect REVL Training Plan">
-  <meta property="og:description" content="5 questions. Your personalised REVL week — programs, times, and schedule built for you.">
+  <title>REVL St. Marys — Find Your Training Plan</title>
+  <meta name="description" content="Answer 5 questions and get your personalised REVL St. Marys training plan.">
+  <meta property="og:title" content="Find Your Perfect REVL Training Plan — St. Marys">
+  <meta property="og:description" content="5 questions. Your personalised REVL St. Marys week — programs, times, and schedule built for you.">
   <meta property="og:image" content="assets/og-image.png">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+    /* NOTE: Primary brand font is 'Neue Haas Grotesk Display Pro' (commercial).
+       Add Adobe Fonts kit URL here when available. Inter is the current fallback. */
 
     /* =====================================================
        DESIGN TOKENS
@@ -28,8 +30,8 @@
       --color-accent:   #ffffff;
 
       --font-display: 'Bebas Neue', sans-serif;
-      --font-ui:      'Barlow Condensed', sans-serif;
-      --font-body:    'Barlow', sans-serif;
+      --font-ui:      'Neue Haas Grotesk Display Pro', 'Inter', system-ui, sans-serif;
+      --font-body:    'Neue Haas Grotesk Display Pro', 'Inter', system-ui, sans-serif;
 
       --text-xs:   12px;
       --text-sm:   14px;
@@ -188,19 +190,20 @@
     }
 
     .logo-wrap {
-      margin-bottom: 48px;
+      margin-bottom: 20px;
       animation: fadeUp 400ms ease both;
     }
-    .logo-wrap img {
-      max-width: 160px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-    .logo-fallback {
-      font-family: var(--font-display);
-      font-size: 52px;
-      letter-spacing: 0.1em;
+    .logo-wrap svg { display: block; margin: 0 auto; }
+
+    .welcome-location {
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-grey-600);
+      margin-bottom: 28px;
+      animation: fadeUp 400ms 80ms ease both;
     }
 
     .welcome-headline {
@@ -236,6 +239,10 @@
     /* =====================================================
        SCREENS 1–5 — QUIZ
        ===================================================== */
+    #screen-quiz {
+      justify-content: center;
+    }
+
     .quiz-header {
       max-width: 720px;
       margin: 0 auto;
@@ -661,13 +668,16 @@
   <div id="screen-welcome" class="screen active">
     <div class="inner">
       <div class="logo-wrap">
-        <img src="assets/REVL__REV-2.svg" alt="REVL Training"
-             width="200" height="60"
-             onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block'">
-        <div id="logo-fallback" class="logo-fallback" style="display:none">REVL</div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" width="220" height="66" aria-label="REVL Training">
+          <path fill="#fff" d="M227.8,164.1c29-10.2,47.6-32.7,47.6-63.9c0-46.8-30.9-82.9-103.8-82.9H14.3v267.4h78.4v-97.3H141c32.7,0,43.6,13.8,47.6,49l5.4,48.3h83.5l-8.7-56.3C263.7,196,251.3,175.7,227.8,164.1z M162.4,132.9H92.7V79.5h69.7c21.8,0,33,10.9,33,26.9C195.5,122.4,184.2,132.9,162.4,132.9z"/>
+          <polygon fill="#fff" points="304,284.6 529.1,284.6 529.1,219.6 382.4,219.6 382.4,176.8 509.8,176.8 509.8,117.2 382.4,117.2 382.4,82.4 529.1,82.4 529.1,17.3 304,17.3"/>
+          <polygon fill="#fff" points="985.7,17.3 894.4,17.3 771.8,209.6 723.7,284.6 985.7,284.6 985.7,209.6 863,209.6"/>
+          <polygon fill="#fff" points="759.4,17.3 636.2,209.6 633.7,209.6 636.2,17.3 560.5,17.3 560.5,284.6 680,284.6 850.1,17.3"/>
+        </svg>
       </div>
+      <div class="welcome-location">REVL St. Marys</div>
       <h1 class="welcome-headline">Find Your Perfect Training Plan</h1>
-      <p class="welcome-sub">Answer 5 quick questions and we'll build your personalised REVL week.</p>
+      <p class="welcome-sub">Answer 5 quick questions and we'll build your personalised training week at REVL St. Marys.</p>
       <p class="welcome-time">Takes about 2 minutes</p>
       <button class="btn-primary" onclick="startQuiz()">Let's Go →</button>
     </div>
@@ -975,59 +985,46 @@
     const { timing, goal, days, team, experience } = answers;
 
     // --- Program selection ---
-    let doPerform = false, doMove = false, doSprint = false, doSweat = false, doComplete = false;
+    let doPerform = false, doMove = false, doSweat = false, doSweatTeam = false, doComplete = false;
 
     if      (goal === 'strength') { doPerform = true; }
     else if (goal === 'fitlean')  { doMove    = true; }
-    else if (goal === 'cardio')   { doMove    = true; doSprint = true; }
-    else if (goal === 'all')      { doPerform = true; doMove   = true; }
+    else if (goal === 'cardio')   { doMove    = true; doSweat = true; }
+    else if (goal === 'all')      { doPerform = true; doMove  = true; }
 
     // Beginners → redirect PERFORM → MOVE
     if (experience === 'beginner' && doPerform && !doMove) { doPerform = false; doMove = true; }
 
     // Days add more programs
-    if (days === '4')        { doSprint = true; }
-    if (days === '5-6')      { doSprint = true; doSweat    = true; }
-    if (days === 'everyday') { doSprint = true; doSweat    = true; doComplete = true; }
+    if (days === '4')        { doSweat = true; }
+    if (days === '5-6')      { doSweat = true; doSweatTeam = true; }
+    if (days === 'everyday') { doSweat = true; doSweatTeam = true; doComplete = true; }
 
-    const sweatHighlight = (team === 'love');
-    const sweatSolo      = (team === 'solo' && doSweat);
-
-    // --- Difficulty level ---
-    let level, levelDesc;
-    if (experience === 'beginner') {
-      level     = 'WHITE';
-      levelDesc = "Welcome to REVL. Everything is scaled to your ability. Just show up — we'll handle the rest.";
-    } else if (experience === 'sometimes') {
-      level     = 'GREY';
-      levelDesc = "You've trained before. Expect to be pushed and see real, measurable progress every block.";
-    } else {
-      level     = 'GREY / BLACK';
-      levelDesc = "You're experienced and ready to push hard. Progression at REVL is structured, measurable, and fast.";
-    }
+    const sweatTeamHighlight = (team === 'love');
+    const sweatTeamSolo      = (team === 'solo' && doSweatTeam);
 
     // --- Time slots by preference ---
-    const earlyT   = ['5:00AM', '6:00AM', '7:00AM'];
-    const eveningT  = ['5:00PM', '6:00PM'];
-    const flexT     = ['5:00AM', '6:00AM', '7:00AM', '9:15AM', '12:15PM', '5:00PM', '6:00PM'];
-    const flexSpT   = ['5:00AM', '6:00AM', '7:00AM', '9:15AM', '5:00PM', '6:00PM'];
-    const flexHi    = ['9:15AM', '12:15PM'];
+    const earlyT  = ['5:00AM', '6:00AM', '7:00AM'];
+    const eveningT = ['5:00PM', '6:00PM'];
+    const flexT    = ['5:00AM', '6:00AM', '7:00AM', '9:15AM', '12:15PM', '5:00PM', '6:00PM'];
+    const flexSwT  = ['5:00AM', '6:00AM', '7:00AM', '9:15AM', '5:00PM', '6:00PM'];
+    const flexHi   = ['9:15AM', '12:15PM'];
 
-    let mainT, sprintT, recT;
-    if      (timing === 'morning')  { mainT = earlyT;  sprintT = earlyT;  recT = '6:00AM'; }
-    else if (timing === 'evening')  { mainT = eveningT; sprintT = eveningT; recT = '6:00PM'; }
-    else                            { mainT = flexT;   sprintT = flexSpT; recT = '9:15AM'; }
+    let mainT, sweatT, recT;
+    if      (timing === 'morning') { mainT = earlyT;   sweatT = earlyT;   recT = '6:00AM'; }
+    else if (timing === 'evening') { mainT = eveningT;  sweatT = eveningT;  recT = '6:00PM'; }
+    else                           { mainT = flexT;    sweatT = flexSwT;  recT = '9:15AM'; }
 
     // --- Weekly schedule ---
     const mainLabel = (doPerform && doMove) ? 'PERFORM / MOVE' : doPerform ? 'PERFORM' : 'MOVE';
     const sched = {
-      Mon: (doPerform || doMove)           ? { label: mainLabel,    time: recT,      on: true  } : { label: 'REST', on: false },
-      Tue: doSprint                        ? { label: 'SPRINT',     time: recT,      on: true  } : { label: 'REST', on: false },
-      Wed: (doPerform || doMove)           ? { label: mainLabel,    time: recT,      on: true  } : { label: 'REST', on: false },
-      Thu: doSprint                        ? { label: 'SPRINT',     time: recT,      on: true  } : { label: 'REST', on: false },
-      Fri: (doPerform || doMove)           ? { label: mainLabel,    time: recT,      on: true  } : { label: 'REST', on: false },
-      Sat: (doSweat && !sweatSolo)         ? { label: 'SWEAT TEAM', time: '7:00AM',  on: true  } : { label: 'REST', on: false },
-      Sun: doComplete                      ? { label: 'COMPLETE',   time: '8:00AM',  on: true  } : { label: 'REST', on: false }
+      Mon: (doPerform || doMove)               ? { label: mainLabel,    time: recT,     on: true  } : { label: 'REST', on: false },
+      Tue: doSweat                             ? { label: 'SWEAT',      time: recT,     on: true  } : { label: 'REST', on: false },
+      Wed: (doPerform || doMove)               ? { label: mainLabel,    time: recT,     on: true  } : { label: 'REST', on: false },
+      Thu: doSweat                             ? { label: 'SWEAT',      time: recT,     on: true  } : { label: 'REST', on: false },
+      Fri: (doPerform || doMove)               ? { label: mainLabel,    time: recT,     on: true  } : { label: 'REST', on: false },
+      Sat: (doSweatTeam && !sweatTeamSolo)     ? { label: 'SWEAT TEAM', time: '7:00AM', on: true  } : { label: 'REST', on: false },
+      Sun: doComplete                          ? { label: 'COMPLETE',   time: '8:00AM', on: true  } : { label: 'REST', on: false }
     };
 
     // --- Summary sentence ---
@@ -1051,17 +1048,17 @@
     const programs = [];
     if (doMove)    programs.push({ name:'MOVE',    desc:"Conditioning-focused training — moderate weights, higher reps, shorter rest. Built for toning, aerobic capacity, and lean muscle.", days:'Mon / Wed / Fri', times: mainT });
     if (doPerform) programs.push({ name:'PERFORM', desc:"Progressive strength program built around overload. Structured to help you lift heavier over time — measurable progression block by block.", days:'Mon / Wed / Fri', times: mainT });
-    if (doSprint)  programs.push({ name:'SPRINT',  desc:"Short, sharp, max-effort cardio intervals. High intensity with generous rest between rounds. The fastest way to build your engine.", days:'Tue / Thu', times: sprintT });
-    if (doSweat && !sweatSolo) programs.push({
+    if (doSweat)   programs.push({ name:'SWEAT',   desc:"Short, sharp, high-intensity intervals. Max effort with generous rest between rounds — the fastest way to build your cardio engine.", days:'Tue / Thu', times: sweatT });
+    if (doSweatTeam && !sweatTeamSolo) programs.push({
       name:  'SWEAT TEAM',
-      desc:  sweatHighlight
+      desc:  sweatTeamHighlight
         ? "Your kind of session — team relay format, high energy, community-first. The most fun hour of your week, every Saturday."
         : "Team relay on Saturday. A different kind of challenge — great for accountability and community.",
       days:  'Saturday',
       times: ['7:00AM', '8:00AM']
     });
-    if (doComplete) programs.push({ name:'COMPLETE', desc:"Upper + lower body combined with conditioning. Lower intensity — perfect as your Sunday recovery or a mid-week make-up session.", days:'Sunday', times:['8:00AM'] });
-    if (sweatSolo)  programs.push({ name:'SWEAT TEAM (Optional)', desc:"Team relay every Saturday at 7AM or 8AM. You prefer solo — but this one's worth trying at least once.", days:'Saturday', times:['7:00AM','8:00AM'] });
+    if (doComplete)    programs.push({ name:'COMPLETE', desc:"Upper + lower body combined with conditioning. Lower intensity — perfect as your Sunday recovery or a mid-week make-up session.", days:'Sunday', times:['8:00AM'] });
+    if (sweatTeamSolo) programs.push({ name:'SWEAT TEAM (Optional)', desc:"Team relay every Saturday at 7AM or 8AM. You prefer solo — but this one's worth trying at least once.", days:'Saturday', times:['7:00AM','8:00AM'] });
 
     const programsHTML = programs.map((p, i) => `
       <div class="program-card anim anim-d${Math.min(i, 7)}">
@@ -1112,7 +1109,7 @@
           <div class="m-freq">Per Week</div>
           <ul class="m-list">
             <li>Unlimited access to all sessions</li>
-            <li>All 5 programs — MOVE, PERFORM, SPRINT, SWEAT TEAM, COMPLETE</li>
+            <li>All 5 programs — MOVE, PERFORM, SWEAT, SWEAT TEAM, COMPLETE</li>
             <li>8-week initial commitment</li>
             <li>2-week cancellation notice</li>
           </ul>
@@ -1127,22 +1124,16 @@
       <div class="result-summary anim anim-d1">${summary}</div>
 
       <div class="result-section anim anim-d2">
-        <div class="section-label">Your Programs</div>
-        ${programsHTML}
-      </div>
-
-      <div class="result-section anim anim-d3">
         <div class="section-label">Your Weekly Schedule</div>
         ${schedHTML}
       </div>
 
-      <div class="result-section anim anim-d4">
-        <div class="section-label">Your Level</div>
-        <div class="level-badge">${level}</div>
-        <div class="level-desc">${levelDesc}</div>
+      <div class="result-section anim anim-d3">
+        <div class="section-label">Your Programs</div>
+        ${programsHTML}
       </div>
 
-      <div class="eofy-banner anim anim-d5">
+      <div class="eofy-banner anim anim-d4">
         <div class="eofy-kicker">EOFY Special Offer</div>
         <div class="eofy-headline">50% Off Your First 3 Weeks</div>
         <div class="eofy-detail">
@@ -1153,19 +1144,19 @@
         <a href="${APP_URL}" target="_blank" rel="noopener" class="btn-primary">Claim This Offer →</a>
       </div>
 
-      <div class="result-section anim anim-d6">
+      <div class="result-section anim anim-d5">
         <div class="section-label">Membership Options</div>
         ${membershipHTML}
       </div>
 
-      <div class="cta-block anim anim-d7">
+      <div class="cta-block anim anim-d6">
         <a href="${APP_URL}" target="_blank" rel="noopener"
            class="btn-primary full large" style="margin-bottom:14px">
           Download the REVL App →
         </a>
-        <a href="https://instagram.com/revltraining" target="_blank" rel="noopener"
+        <a href="https://instagram.com/revl.training.stmarys" target="_blank" rel="noopener"
            class="btn-ghost full">
-          DM us @revltraining
+          Follow us @revl.training.stmarys
         </a>
         <p class="cta-note">
           After downloading: open the app → select <strong>REVL St. Marys</strong> → choose your membership plan
