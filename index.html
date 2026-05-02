@@ -723,6 +723,11 @@
              placeholder="you@example.com" autocomplete="email">
       <div class="field-error" id="err-email">Please enter a valid email address.</div>
 
+      <label class="form-label" for="inp-phone">Mobile Number</label>
+      <input type="tel" id="inp-phone" class="form-input"
+             placeholder="04XX XXX XXX" autocomplete="tel">
+      <div class="field-error" id="err-phone">Please enter a valid mobile number.</div>
+
       <div class="checkbox-row">
         <input type="checkbox" id="chk-marketing" checked>
         <label for="chk-marketing">I'm happy to receive updates and offers from REVL Training</label>
@@ -925,9 +930,10 @@
   async function submitLead() {
     const nameEl  = document.getElementById('inp-name');
     const emailEl = document.getElementById('inp-email');
+    const phoneEl = document.getElementById('inp-phone');
 
     // Reset errors
-    ['err-name','err-email','submit-error'].forEach(id =>
+    ['err-name','err-email','err-phone','submit-error'].forEach(id =>
       document.getElementById(id).classList.remove('show'));
 
     let valid = true;
@@ -939,10 +945,16 @@
       document.getElementById('err-email').classList.add('show');
       valid = false;
     }
+    const phoneRaw = phoneEl.value.trim().replace(/\s/g, '');
+    if (phoneRaw && !/^(\+?61|0)[2-9]\d{8}$/.test(phoneRaw)) {
+      document.getElementById('err-phone').classList.add('show');
+      valid = false;
+    }
     if (!valid) return;
 
     leadName = nameEl.value.trim();
     const leadEmail  = emailEl.value.trim();
+    const leadPhone  = phoneRaw;
     const marketing  = document.getElementById('chk-marketing').checked;
 
     const btn = document.getElementById('btn-submit');
@@ -960,6 +972,7 @@
             timestamp:  new Date().toISOString(),
             name:       leadName,
             email:      leadEmail,
+            phone:      leadPhone,
             marketing,
             timing:     answers.timing,
             goal:       answers.goal,

@@ -1,18 +1,27 @@
 # REVL Training — Interactive Quiz
 
-Interactive training questionnaire that recommends a personalised REVL program based on 5 questions. Captures name + email before showing the result, and sends leads to Google Sheets automatically.
+Interactive training questionnaire that recommends a personalised REVL program based on 5 questions. Captures name, email and mobile number before showing the result, and sends leads to Google Sheets automatically.
 
 ---
 
 ## Deployment (Vercel)
 
+This project deploys under the **stmarys-5100** Vercel account.
+
 ```bash
 npm i -g vercel
 cd revl-quiz
-vercel
+vercel login        # log in as stmarys-5100 if not already
+vercel              # follow prompts — select stmarys-5100 scope
 ```
 
 Follow the prompts — takes under 2 minutes. You'll get a URL like `revl-quiz.vercel.app`.
+
+To redeploy after any changes:
+
+```bash
+vercel --prod
+```
 
 To connect a custom domain, go to the Vercel dashboard → your project → Domains.
 
@@ -42,7 +51,7 @@ function doPost(e) {
     // Add headers on first run
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
-        'Timestamp', 'Name', 'Email', 'Marketing Consent',
+        'Timestamp', 'Name', 'Email', 'Phone', 'Marketing Consent',
         'Timing', 'Goal', 'Days', 'Team', 'Experience'
       ]);
     }
@@ -51,6 +60,7 @@ function doPost(e) {
       data.timestamp  || new Date().toISOString(),
       data.name       || '',
       data.email      || '',
+      data.phone      || '',
       data.marketing  ? 'Yes' : 'No',
       data.timing     || '',
       data.goal       || '',
