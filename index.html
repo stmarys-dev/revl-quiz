@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REVL Training — Find Your Program</title>
+  <meta name="description" content="Answer 5 questions and get your personalised REVL training plan. REVL St. Marys.">
+  <meta property="og:title" content="Find Your Perfect REVL Training Plan">
+  <meta property="og:description" content="5 questions. Your personalised REVL week — programs, times, and schedule built for you.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap');
+
+    /* =====================================================
+       DESIGN TOKENS
+       ===================================================== */
+    :root {
+      --color-black:    #0a0a0a;
+      --color-white:    #ffffff;
+      --color-grey-100: #f5f5f5;
+      --color-grey-300: #cccccc;
+      --color-grey-600: #666666;
+      --color-grey-800: #1a1a1a;
+      --color-accent:   #ffffff;
+
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-ui:      'Barlow Condensed', sans-serif;
+      --font-body:    'Barlow', sans-serif;
+
+      --text-xs:   12px;
+      --text-sm:   14px;
+      --text-base: 16px;
+      --text-lg:   20px;
+      --text-xl:   28px;
+      --text-2xl:  40px;
+      --text-3xl:  64px;
+    }
+
+    /* =====================================================
+       RESET
+       ===================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--color-black);
+      color: var(--color-white);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* =====================================================
+       SCREENS
+       ===================================================== */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    .screen.active {
+      display: flex;
+      animation: screenIn 350ms ease both;
+    }
+    @keyframes screenIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* =====================================================
+       INNER CONTAINER (centers content on desktop)
+       ===================================================== */
+    .inner {
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* =====================================================
+       PROGRESS BAR
+       ===================================================== */
+    .progress-track {
+      width: 100%;
+      height: 3px;
+      background: var(--color-grey-800);
+      flex-shrink: 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--color-white);
+      transition: width 300ms ease;
+    }
+
+    /* =====================================================
+       BUTTONS
+       ===================================================== */
+    .btn-primary {
+      background: var(--color-white);
+      color: var(--color-black);
+      border: 2px solid var(--color-white);
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      letter-spacing: 0.08em;
+      padding: 14px 36px;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background 150ms ease, color 150ms ease;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      -webkit-appearance: none;
+    }
+    .btn-primary:hover       { background: transparent; color: var(--color-white); }
+    .btn-primary:disabled    { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+    .btn-primary.full        { display: block; width: 100%; text-align: center; }
+    .btn-primary.large       { font-size: 22px; padding: 18px 40px; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-white);
+      border: 1px solid #333;
+      font-family: var(--font-ui);
+      font-size: var(--text-base);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 14px 28px;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-ghost:hover { background: var(--color-white); color: var(--color-black); border-color: var(--color-white); }
+    .btn-ghost.full  { display: block; width: 100%; text-align: center; }
+
+    .btn-back {
+      background: none;
+      border: none;
+      color: var(--color-grey-600);
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 8px 0;
+      transition: color 150ms ease;
+    }
+    .btn-back:hover { color: var(--color-white); }
+
+    /* =====================================================
+       ANIMATIONS
+       ===================================================== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim           { animation: fadeUp 400ms ease both; }
+    .anim-d0        { animation-delay: 0ms; }
+    .anim-d1        { animation-delay: 100ms; }
+    .anim-d2        { animation-delay: 200ms; }
+    .anim-d3        { animation-delay: 300ms; }
+    .anim-d4        { animation-delay: 400ms; }
+    .anim-d5        { animation-delay: 500ms; }
+    .anim-d6        { animation-delay: 600ms; }
+    .anim-d7        { animation-delay: 700ms; }
+
+    /* =====================================================
+       SCREEN 0 — WELCOME
+       ===================================================== */
+    #screen-welcome .inner {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 80px;
+      padding-bottom: 80px;
+      gap: 0;
+    }
+
+    .logo-wrap {
+      margin-bottom: 48px;
+      animation: fadeUp 400ms ease both;
+    }
+    .logo-wrap img {
+      max-width: 160px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .logo-fallback {
+      font-family: var(--font-display);
+      font-size: 52px;
+      letter-spacing: 0.1em;
+    }
+
+    .welcome-headline {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 20px;
+      animation: fadeUp 400ms 100ms ease both;
+    }
+    .welcome-sub {
+      font-family: var(--font-ui);
+      font-size: var(--text-lg);
+      color: var(--color-grey-300);
+      max-width: 400px;
+      margin-bottom: 10px;
+      animation: fadeUp 400ms 200ms ease both;
+    }
+    .welcome-time {
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      color: var(--color-grey-600);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+      animation: fadeUp 400ms 300ms ease both;
+    }
+    #screen-welcome .btn-primary {
+      animation: fadeUp 400ms 400ms ease both;
+    }
+
+    /* =====================================================
+       SCREENS 1–5 — QUIZ
+       ===================================================== */
+    .quiz-header {
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 24px;
+    }
+
+    .step-label {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-grey-600);
+      padding: 22px 0 20px;
+    }
+
+    .question-text {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      margin-bottom: 28px;
+    }
+
+    /* quiz body: slide transitions between questions */
+    #quiz-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      transition: opacity 200ms ease, transform 200ms ease;
+    }
+    #quiz-body.exit-left  { opacity: 0; transform: translateX(-28px); }
+    #quiz-body.exit-right { opacity: 0; transform: translateX(28px);  }
+    #quiz-body.from-right { opacity: 0; transform: translateX(28px);  }
+    #quiz-body.from-left  { opacity: 0; transform: translateX(-28px); }
+
+    /* =====================================================
+       ANSWER CARDS
+       ===================================================== */
+    .answer-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .answer-cards.two-col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    @media (min-width: 500px) {
+      .answer-cards.two-col { grid-template-columns: 1fr 1fr; }
+    }
+
+    .answer-card {
+      border: 1px solid #272727;
+      padding: 18px 22px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--color-white);
+      font-family: var(--font-ui);
+      font-size: var(--text-lg);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-align: left;
+      width: 100%;
+      border-radius: 0;
+      -webkit-appearance: none;
+      transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+    }
+    .answer-card:hover    { background: var(--color-white); color: var(--color-black); border-color: var(--color-white); }
+    .answer-card.selected { background: var(--color-white); color: var(--color-black); border: 2px solid var(--color-white); }
+
+    /* =====================================================
+       NAV ROW
+       ===================================================== */
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0 32px;
+      margin-top: auto;
+    }
+
+    /* =====================================================
+       SCREEN 6 — LEAD CAPTURE
+       ===================================================== */
+    #screen-lead .inner {
+      padding-top: 64px;
+      padding-bottom: 60px;
+    }
+
+    .lead-headline {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 10px;
+    }
+    .lead-sub {
+      font-family: var(--font-ui);
+      font-size: var(--text-base);
+      color: var(--color-grey-300);
+      margin-bottom: 40px;
+      line-height: 1.5;
+    }
+
+    .form-label {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-grey-600);
+      margin-bottom: 8px;
+    }
+    .form-input {
+      display: block;
+      width: 100%;
+      background: var(--color-grey-800);
+      border: 1px solid #2a2a2a;
+      color: var(--color-white);
+      font-family: var(--font-ui);
+      font-size: var(--text-base);
+      padding: 15px 16px;
+      border-radius: 0;
+      outline: none;
+      margin-bottom: 6px;
+      -webkit-appearance: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+    .form-input:focus       { border-color: var(--color-white); box-shadow: 0 0 0 1px var(--color-white); }
+    .form-input::placeholder { color: #444; }
+
+    .field-error {
+      color: #ff5555;
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      display: none;
+      margin-bottom: 16px;
+    }
+    .field-error.show { display: block; }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 24px 0 32px;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      accent-color: var(--color-white);
+      cursor: pointer;
+    }
+    .checkbox-row label {
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      color: var(--color-grey-300);
+      cursor: pointer;
+      line-height: 1.5;
+    }
+
+    .submit-error {
+      color: #ff5555;
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      text-align: center;
+      margin-top: 12px;
+      display: none;
+    }
+    .submit-error.show { display: block; }
+
+    .privacy-note {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      color: var(--color-grey-600);
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    /* =====================================================
+       SCREEN 7 — RESULT
+       ===================================================== */
+    #screen-result .inner {
+      padding-top: 52px;
+      padding-bottom: 80px;
+    }
+
+    .result-greeting {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .result-summary {
+      font-family: var(--font-ui);
+      font-size: var(--text-lg);
+      color: var(--color-grey-300);
+      margin-bottom: 48px;
+      line-height: 1.5;
+    }
+
+    .section-label {
+      font-family: var(--font-ui);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-grey-600);
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--color-grey-800);
+      margin-bottom: 18px;
+    }
+    .result-section { margin-bottom: 52px; }
+
+    /* Program cards */
+    .program-card {
+      background: var(--color-grey-800);
+      border: 1px solid #222;
+      padding: 22px 24px;
+      margin-bottom: 12px;
+    }
+    .program-card:last-child { margin-bottom: 0; }
+    .program-card-name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .program-card-desc {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--color-grey-300);
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+    .program-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-family: var(--font-ui);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid #333;
+      color: var(--color-grey-300);
+    }
+    .tag.hi { border-color: var(--color-white); color: var(--color-white); }
+
+    /* Schedule table */
+    .schedule-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .schedule-table { width: 100%; min-width: 480px; border-collapse: collapse; }
+    .schedule-table th {
+      font-family: var(--font-ui);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-grey-600);
+      padding: 8px 6px;
+      text-align: center;
+      border-bottom: 1px solid var(--color-grey-800);
+    }
+    .schedule-table td {
+      padding: 12px 6px;
+      text-align: center;
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #3a3a3a;
+      line-height: 1.5;
+      vertical-align: middle;
+    }
+    .schedule-table td.on { color: var(--color-white); background: var(--color-grey-800); }
+
+    /* Level */
+    .level-badge {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      letter-spacing: 0.14em;
+      padding: 8px 22px;
+      border: 2px solid var(--color-white);
+      margin-bottom: 12px;
+    }
+    .level-desc {
+      font-family: var(--font-ui);
+      font-size: var(--text-base);
+      color: var(--color-grey-300);
+      line-height: 1.5;
+    }
+
+    /* EOFY banner */
+    .eofy-banner {
+      border: 1px solid var(--color-white);
+      padding: 28px 24px;
+      margin-bottom: 52px;
+      animation: eofyGlow 4s ease-in-out infinite;
+    }
+    @keyframes eofyGlow {
+      0%, 100% { box-shadow: 0 0 0 rgba(255,255,255,0); }
+      50%       { box-shadow: 0 0 28px rgba(255,255,255,0.07); }
+    }
+    .eofy-kicker {
+      font-family: var(--font-ui);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-grey-600);
+      margin-bottom: 8px;
+    }
+    .eofy-headline {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+    .eofy-detail {
+      font-family: var(--font-ui);
+      font-size: var(--text-base);
+      color: var(--color-grey-300);
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+    .eofy-urgency {
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-grey-600);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+    }
+
+    /* Membership cards */
+    .membership-grid { display: flex; flex-direction: column; gap: 16px; }
+    @media (min-width: 560px) { .membership-grid { flex-direction: row; } }
+
+    .membership-card {
+      flex: 1;
+      background: var(--color-grey-800);
+      border: 1px solid #222;
+      padding: 24px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .membership-card.featured { border-color: var(--color-white); }
+    .featured-badge {
+      position: absolute;
+      top: -1px;
+      right: 16px;
+      background: var(--color-white);
+      color: var(--color-black);
+      font-family: var(--font-ui);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+    }
+    .m-name  { font-family: var(--font-display); font-size: var(--text-xl); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .m-price { font-family: var(--font-display); font-size: var(--text-2xl); letter-spacing: 0.02em; margin-bottom: 2px; }
+    .m-freq  { font-family: var(--font-ui); font-size: var(--text-xs); font-weight: 700; color: var(--color-grey-600); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; }
+    .m-list  { list-style: none; margin-bottom: 24px; flex: 1; }
+    .m-list li {
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      color: var(--color-grey-300);
+      padding: 5px 0;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      line-height: 1.4;
+    }
+    .m-list li::before { content: '—'; color: var(--color-grey-600); flex-shrink: 0; }
+
+    /* Bottom CTA block */
+    .cta-block {
+      text-align: center;
+      padding-top: 24px;
+      border-top: 1px solid var(--color-grey-800);
+      margin-top: 8px;
+    }
+    .cta-note {
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      color: var(--color-grey-600);
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+    @media (max-width: 480px) {
+      .welcome-headline  { font-size: 44px; }
+      .result-greeting   { font-size: 42px; }
+      .question-text     { font-size: 30px; }
+      .eofy-headline     { font-size: 32px; }
+      .m-price           { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================
+       SCREEN 0 — WELCOME
+       ====================================================== -->
+  <div id="screen-welcome" class="screen active">
+    <div class="inner">
+      <div class="logo-wrap">
+        <img src="assets/logo.png" alt="REVL Training"
+             onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block'">
+        <div id="logo-fallback" class="logo-fallback" style="display:none">REVL</div>
+      </div>
+      <h1 class="welcome-headline">Find Your Perfect Training Plan</h1>
+      <p class="welcome-sub">Answer 5 quick questions and we'll build your personalised REVL week.</p>
+      <p class="welcome-time">Takes about 2 minutes</p>
+      <button class="btn-primary" onclick="startQuiz()">Let's Go →</button>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       SCREENS 1–5 — QUIZ
+       ====================================================== -->
+  <div id="screen-quiz" class="screen">
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div class="quiz-header">
+      <span class="step-label" id="step-label"></span>
+      <div class="question-text" id="question-text"></div>
+    </div>
+    <div class="inner" style="padding-top:0">
+      <div id="quiz-body">
+        <div class="answer-cards" id="answer-cards"></div>
+        <div class="nav-row">
+          <button class="btn-back" id="btn-back" onclick="goBack()">← Back</button>
+          <button class="btn-primary" id="btn-next" onclick="goNext()" disabled>Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       SCREEN 6 — LEAD CAPTURE
+       ====================================================== -->
+  <div id="screen-lead" class="screen">
+    <div class="inner">
+      <h2 class="lead-headline">Your plan is ready.</h2>
+      <p class="lead-sub">Enter your details to unlock your personalised REVL training plan.</p>
+
+      <label class="form-label" for="inp-name">First Name</label>
+      <input type="text" id="inp-name" class="form-input"
+             placeholder="Your first name" autocomplete="given-name">
+      <div class="field-error" id="err-name">Please enter your first name.</div>
+
+      <label class="form-label" for="inp-email">Email Address</label>
+      <input type="email" id="inp-email" class="form-input"
+             placeholder="you@example.com" autocomplete="email">
+      <div class="field-error" id="err-email">Please enter a valid email address.</div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="chk-marketing" checked>
+        <label for="chk-marketing">I'm happy to receive updates and offers from REVL Training</label>
+      </div>
+
+      <button class="btn-primary full large" id="btn-submit" onclick="submitLead()">
+        Show My Plan →
+      </button>
+      <div class="submit-error" id="submit-error">Something went wrong — please try again.</div>
+      <p class="privacy-note">We respect your privacy. No spam. Unsubscribe anytime.</p>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       SCREEN 7 — RESULT (populated by JS)
+       ====================================================== -->
+  <div id="screen-result" class="screen">
+    <div class="inner">
+      <div id="result-content"></div>
+    </div>
+  </div>
+
+<script>
+  // ===========================================================
+  // REVL TRAINING QUIZ — App Logic
+  // ===========================================================
+
+  // TODO: Replace this placeholder with your Google Apps Script web app URL.
+  // Setup steps are in README.md → "Google Sheets Lead Capture Setup".
+  const LEAD_CAPTURE_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+  // CTA link: opens REVL app → user selects REVL St. Marys → picks membership
+  const APP_URL = 'https://onelink.to/4bxwgz?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAdGRleAPOapNleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAaeNoGYSNGLS3O5jeLsaUmS4m-RXAV8Uv_BSs92K03-Jzr84Z_j5gb9D4ydpXQ_aem_sZZnK3ouoBgBigArnQypkg';
+
+  // ===========================================================
+  // QUESTIONS
+  // ===========================================================
+  const QUESTIONS = [
+    {
+      id: 'timing',
+      text: "Are you a morning person?",
+      options: [
+        { value: 'morning',  label: 'Yes — I train early' },
+        { value: 'evening',  label: 'No — evenings work better' },
+        { value: 'flexible', label: 'Depends on the day' }
+      ]
+    },
+    {
+      id: 'goal',
+      text: "What's your main training goal?",
+      twoCol: true,
+      options: [
+        { value: 'strength', label: 'Build strength' },
+        { value: 'fitlean',  label: 'Get fit & lean' },
+        { value: 'cardio',   label: 'Improve my cardio' },
+        { value: 'all',      label: 'All of the above' }
+      ]
+    },
+    {
+      id: 'days',
+      text: "How many days a week can you commit?",
+      twoCol: true,
+      options: [
+        { value: '2-3',      label: '2–3 days' },
+        { value: '4',        label: '4 days' },
+        { value: '5-6',      label: '5–6 days' },
+        { value: 'everyday', label: 'Every day' }
+      ]
+    },
+    {
+      id: 'team',
+      text: "Do you enjoy training with a team?",
+      options: [
+        { value: 'love',     label: 'Love it — the energy is everything' },
+        { value: 'dontmind', label: "I don't mind either way" },
+        { value: 'solo',     label: 'I prefer training solo' }
+      ]
+    },
+    {
+      id: 'experience',
+      text: "Have you trained in a gym before?",
+      options: [
+        { value: 'regularly', label: 'Yes, regularly' },
+        { value: 'sometimes', label: 'Sometimes' },
+        { value: 'beginner',  label: "I'm just starting out" }
+      ]
+    }
+  ];
+
+  // ===========================================================
+  // STATE
+  // ===========================================================
+  let currentQ  = 0;
+  const answers = {};
+  let leadName  = '';
+
+  // ===========================================================
+  // SCREEN SWITCHER
+  // ===========================================================
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // ===========================================================
+  // QUIZ START
+  // ===========================================================
+  function startQuiz() {
+    currentQ = 0;
+    renderQuestion();
+    showScreen('screen-quiz');
+  }
+
+  // ===========================================================
+  // RENDER QUESTION
+  // ===========================================================
+  function renderQuestion(enterDir) {
+    const q   = QUESTIONS[currentQ];
+    const pct = ((currentQ + 1) / QUESTIONS.length) * 100;
+
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('step-label').textContent =
+      `Question ${String(currentQ + 1).padStart(2,'0')} of ${String(QUESTIONS.length).padStart(2,'0')}`;
+    document.getElementById('question-text').textContent = q.text;
+
+    // Build answer cards
+    const cardsEl = document.getElementById('answer-cards');
+    cardsEl.className = 'answer-cards' + (q.twoCol ? ' two-col' : '');
+    cardsEl.innerHTML = q.options.map(opt => `
+      <button
+        class="answer-card ${answers[q.id] === opt.value ? 'selected' : ''}"
+        onclick="selectAnswer('${opt.value}', this)"
+      >${opt.label}</button>
+    `).join('');
+
+    // Next button
+    const nextBtn = document.getElementById('btn-next');
+    nextBtn.textContent = currentQ === QUESTIONS.length - 1 ? 'See My Plan →' : 'Next →';
+    nextBtn.disabled    = !answers[q.id];
+
+    // Back button
+    document.getElementById('btn-back').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
+
+    // Slide-in animation
+    if (enterDir) {
+      const body      = document.getElementById('quiz-body');
+      const enterClass = enterDir === 'forward' ? 'from-right' : 'from-left';
+      body.classList.add(enterClass);
+      requestAnimationFrame(() => requestAnimationFrame(() => body.classList.remove(enterClass)));
+    }
+  }
+
+  // ===========================================================
+  // SELECT ANSWER
+  // ===========================================================
+  function selectAnswer(value, cardEl) {
+    const q = QUESTIONS[currentQ];
+    answers[q.id] = value;
+    document.querySelectorAll('#answer-cards .answer-card').forEach(c => c.classList.remove('selected'));
+    cardEl.classList.add('selected');
+    document.getElementById('btn-next').disabled = false;
+  }
+
+  // ===========================================================
+  // NAVIGATION
+  // ===========================================================
+  function goNext() {
+    if (!answers[QUESTIONS[currentQ].id]) return;
+
+    if (currentQ === QUESTIONS.length - 1) {
+      showScreen('screen-lead');
+      return;
+    }
+
+    const body = document.getElementById('quiz-body');
+    body.classList.add('exit-left');
+    setTimeout(() => {
+      body.classList.remove('exit-left');
+      currentQ++;
+      renderQuestion('forward');
+    }, 200);
+  }
+
+  function goBack() {
+    if (currentQ === 0) { showScreen('screen-welcome'); return; }
+
+    const body = document.getElementById('quiz-body');
+    body.classList.add('exit-right');
+    setTimeout(() => {
+      body.classList.remove('exit-right');
+      currentQ--;
+      renderQuestion('back');
+    }, 200);
+  }
+
+  // ===========================================================
+  // LEAD CAPTURE SUBMIT
+  // ===========================================================
+  async function submitLead() {
+    const nameEl  = document.getElementById('inp-name');
+    const emailEl = document.getElementById('inp-email');
+
+    // Reset errors
+    ['err-name','err-email','submit-error'].forEach(id =>
+      document.getElementById(id).classList.remove('show'));
+
+    let valid = true;
+    if (!nameEl.value.trim()) {
+      document.getElementById('err-name').classList.add('show');
+      valid = false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
+      document.getElementById('err-email').classList.add('show');
+      valid = false;
+    }
+    if (!valid) return;
+
+    leadName = nameEl.value.trim();
+    const leadEmail  = emailEl.value.trim();
+    const marketing  = document.getElementById('chk-marketing').checked;
+
+    const btn = document.getElementById('btn-submit');
+    btn.textContent = 'Building your plan...';
+    btn.disabled    = true;
+
+    // POST to Google Sheets — fail gracefully, never block the result
+    try {
+      if (LEAD_CAPTURE_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+        await fetch(LEAD_CAPTURE_URL, {
+          method:  'POST',
+          mode:    'no-cors', // Required for Google Apps Script web app
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({
+            timestamp:  new Date().toISOString(),
+            name:       leadName,
+            email:      leadEmail,
+            marketing,
+            timing:     answers.timing,
+            goal:       answers.goal,
+            days:       answers.days,
+            team:       answers.team,
+            experience: answers.experience
+          })
+        });
+      }
+    } catch (e) {
+      // Intentionally swallowed — never block the user from seeing their result
+      console.warn('Lead capture error (non-blocking):', e);
+    }
+
+    buildResultScreen();
+    showScreen('screen-result');
+  }
+
+  // ===========================================================
+  // RESULT LOGIC
+  // ===========================================================
+  function buildResultScreen() {
+    const { timing, goal, days, team, experience } = answers;
+
+    // --- Program selection ---
+    let doPerform = false, doMove = false, doSprint = false, doSweat = false, doComplete = false;
+
+    if      (goal === 'strength') { doPerform = true; }
+    else if (goal === 'fitlean')  { doMove    = true; }
+    else if (goal === 'cardio')   { doMove    = true; doSprint = true; }
+    else if (goal === 'all')      { doPerform = true; doMove   = true; }
+
+    // Beginners → redirect PERFORM → MOVE
+    if (experience === 'beginner' && doPerform && !doMove) { doPerform = false; doMove = true; }
+
+    // Days add more programs
+    if (days === '4')        { doSprint = true; }
+    if (days === '5-6')      { doSprint = true; doSweat    = true; }
+    if (days === 'everyday') { doSprint = true; doSweat    = true; doComplete = true; }
+
+    const sweatHighlight = (team === 'love');
+    const sweatSolo      = (team === 'solo' && doSweat);
+
+    // --- Difficulty level ---
+    let level, levelDesc;
+    if (experience === 'beginner') {
+      level     = 'WHITE';
+      levelDesc = "Welcome to REVL. Everything is scaled to your ability. Just show up — we'll handle the rest.";
+    } else if (experience === 'sometimes') {
+      level     = 'GREY';
+      levelDesc = "You've trained before. Expect to be pushed and see real, measurable progress every block.";
+    } else {
+      level     = 'GREY / BLACK';
+      levelDesc = "You're experienced and ready to push hard. Progression at REVL is structured, measurable, and fast.";
+    }
+
+    // --- Time slots by preference ---
+    const earlyT   = ['5:00AM', '6:00AM', '7:00AM'];
+    const eveningT  = ['5:00PM', '6:00PM'];
+    const flexT     = ['5:00AM', '6:00AM', '7:00AM', '9:15AM', '12:15PM', '5:00PM', '6:00PM'];
+    const flexSpT   = ['5:00AM', '6:00AM', '7:00AM', '9:15AM', '5:00PM', '6:00PM'];
+    const flexHi    = ['9:15AM', '12:15PM'];
+
+    let mainT, sprintT, recT;
+    if      (timing === 'morning')  { mainT = earlyT;  sprintT = earlyT;  recT = '6:00AM'; }
+    else if (timing === 'evening')  { mainT = eveningT; sprintT = eveningT; recT = '6:00PM'; }
+    else                            { mainT = flexT;   sprintT = flexSpT; recT = '9:15AM'; }
+
+    // --- Weekly schedule ---
+    const mainLabel = (doPerform && doMove) ? 'PERFORM / MOVE' : doPerform ? 'PERFORM' : 'MOVE';
+    const sched = {
+      Mon: (doPerform || doMove)           ? { label: mainLabel,    time: recT,      on: true  } : { label: 'REST', on: false },
+      Tue: doSprint                        ? { label: 'SPRINT',     time: recT,      on: true  } : { label: 'REST', on: false },
+      Wed: (doPerform || doMove)           ? { label: mainLabel,    time: recT,      on: true  } : { label: 'REST', on: false },
+      Thu: doSprint                        ? { label: 'SPRINT',     time: recT,      on: true  } : { label: 'REST', on: false },
+      Fri: (doPerform || doMove)           ? { label: mainLabel,    time: recT,      on: true  } : { label: 'REST', on: false },
+      Sat: (doSweat && !sweatSolo)         ? { label: 'SWEAT TEAM', time: '7:00AM',  on: true  } : { label: 'REST', on: false },
+      Sun: doComplete                      ? { label: 'COMPLETE',   time: '8:00AM',  on: true  } : { label: 'REST', on: false }
+    };
+
+    // --- Summary sentence ---
+    const timingPhrase = {
+      morning:  "You're an early riser",
+      evening:  "You train in the evenings",
+      flexible: "You've got a flexible schedule"
+    };
+    const goalPhrase = {
+      strength: "focused on building real strength",
+      fitlean:  "looking to get fit and lean",
+      cardio:   "building your cardio engine",
+      all:      "after the full package — strength, fitness, and cardio"
+    };
+    const dayPhrase = {
+      '2-3': 'solid 3-day', '4': 'strong 4-day', '5-6': 'full 5-day', 'everyday': 'every-day'
+    };
+    const summary = `${timingPhrase[timing]}, ${goalPhrase[goal]}. Here's your ${dayPhrase[days]} REVL week.`;
+
+    // --- Build program cards ---
+    const programs = [];
+    if (doMove)    programs.push({ name:'MOVE',    desc:"Conditioning-focused training — moderate weights, higher reps, shorter rest. Built for toning, aerobic capacity, and lean muscle.", days:'Mon / Wed / Fri', times: mainT });
+    if (doPerform) programs.push({ name:'PERFORM', desc:"Progressive strength program built around overload. Structured to help you lift heavier over time — measurable progression block by block.", days:'Mon / Wed / Fri', times: mainT });
+    if (doSprint)  programs.push({ name:'SPRINT',  desc:"Short, sharp, max-effort cardio intervals. High intensity with generous rest between rounds. The fastest way to build your engine.", days:'Tue / Thu', times: sprintT });
+    if (doSweat && !sweatSolo) programs.push({
+      name:  'SWEAT TEAM',
+      desc:  sweatHighlight
+        ? "Your kind of session — team relay format, high energy, community-first. The most fun hour of your week, every Saturday."
+        : "Team relay on Saturday. A different kind of challenge — great for accountability and community.",
+      days:  'Saturday',
+      times: ['7:00AM', '8:00AM']
+    });
+    if (doComplete) programs.push({ name:'COMPLETE', desc:"Upper + lower body combined with conditioning. Lower intensity — perfect as your Sunday recovery or a mid-week make-up session.", days:'Sunday', times:['8:00AM'] });
+    if (sweatSolo)  programs.push({ name:'SWEAT TEAM (Optional)', desc:"Team relay every Saturday at 7AM or 8AM. You prefer solo — but this one's worth trying at least once.", days:'Saturday', times:['7:00AM','8:00AM'] });
+
+    const programsHTML = programs.map((p, i) => `
+      <div class="program-card anim anim-d${Math.min(i, 7)}">
+        <div class="program-card-name">${p.name}</div>
+        <div class="program-card-desc">${p.desc}</div>
+        <div class="program-card-tags">
+          <span class="tag">${p.days}</span>
+          ${p.times.map(t => `<span class="tag ${flexHi.includes(t) && timing === 'flexible' ? 'hi' : ''}">${t}${flexHi.includes(t) && timing === 'flexible' ? ' ★' : ''}</span>`).join('')}
+        </div>
+      </div>
+    `).join('');
+
+    // --- Schedule table ---
+    const schedHTML = `
+      <div class="schedule-wrap">
+        <table class="schedule-table">
+          <thead><tr>${Object.keys(sched).map(d => `<th>${d}</th>`).join('')}</tr></thead>
+          <tbody><tr>
+            ${Object.values(sched).map(s =>
+              s.on
+                ? `<td class="on"><strong>${s.label}</strong><br>${s.time}</td>`
+                : `<td>REST</td>`
+            ).join('')}
+          </tr></tbody>
+        </table>
+      </div>
+    `;
+
+    // --- Membership cards ---
+    const membershipHTML = `
+      <div class="membership-grid">
+        <div class="membership-card anim anim-d1">
+          <div class="m-name">Part-Time</div>
+          <div class="m-price">$42.95</div>
+          <div class="m-freq">Per Week</div>
+          <ul class="m-list">
+            <li>2 REVL sessions per week</li>
+            <li>8-week initial commitment</li>
+            <li>2-week cancellation notice</li>
+            <li>$0 joining fee</li>
+          </ul>
+          <a href="${APP_URL}" target="_blank" rel="noopener" class="btn-ghost full">Get Started</a>
+        </div>
+        <div class="membership-card featured anim anim-d2">
+          <div class="featured-badge">Most Popular</div>
+          <div class="m-name">REVL Unlimited</div>
+          <div class="m-price">$62.95</div>
+          <div class="m-freq">Per Week</div>
+          <ul class="m-list">
+            <li>Unlimited access to all sessions</li>
+            <li>All 5 programs — MOVE, PERFORM, SPRINT, SWEAT TEAM, COMPLETE</li>
+            <li>8-week initial commitment</li>
+            <li>2-week cancellation notice</li>
+          </ul>
+          <a href="${APP_URL}" target="_blank" rel="noopener" class="btn-primary full">Join Now</a>
+        </div>
+      </div>
+    `;
+
+    // --- Assemble result screen ---
+    document.getElementById('result-content').innerHTML = `
+      <div class="result-greeting anim anim-d0">Here's your REVL plan, ${esc(leadName)}.</div>
+      <div class="result-summary anim anim-d1">${summary}</div>
+
+      <div class="result-section anim anim-d2">
+        <div class="section-label">Your Programs</div>
+        ${programsHTML}
+      </div>
+
+      <div class="result-section anim anim-d3">
+        <div class="section-label">Your Weekly Schedule</div>
+        ${schedHTML}
+      </div>
+
+      <div class="result-section anim anim-d4">
+        <div class="section-label">Your Level</div>
+        <div class="level-badge">${level}</div>
+        <div class="level-desc">${levelDesc}</div>
+      </div>
+
+      <div class="eofy-banner anim anim-d5">
+        <div class="eofy-kicker">EOFY Special Offer</div>
+        <div class="eofy-headline">50% Off Your First 3 Weeks</div>
+        <div class="eofy-detail">
+          50% discount on your first 3 weeks of REVL Unlimited Membership.<br>
+          8-week lock-in contract applies.
+        </div>
+        <div class="eofy-urgency">Limited spots — don't leave it</div>
+        <a href="${APP_URL}" target="_blank" rel="noopener" class="btn-primary">Claim This Offer →</a>
+      </div>
+
+      <div class="result-section anim anim-d6">
+        <div class="section-label">Membership Options</div>
+        ${membershipHTML}
+      </div>
+
+      <div class="cta-block anim anim-d7">
+        <a href="${APP_URL}" target="_blank" rel="noopener"
+           class="btn-primary full large" style="margin-bottom:14px">
+          Download the REVL App →
+        </a>
+        <a href="https://instagram.com/revltraining" target="_blank" rel="noopener"
+           class="btn-ghost full">
+          DM us @revltraining
+        </a>
+        <p class="cta-note">
+          After downloading: open the app → select <strong>REVL St. Marys</strong> → choose your membership plan
+        </p>
+      </div>
+    `;
+  }
+
+  // ===========================================================
+  // UTILITY
+  // ===========================================================
+  function esc(str) {
+    return str.replace(/[&<>"']/g, c =>
+      ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  }
+</script>
+</body>
+</html>
